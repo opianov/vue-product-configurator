@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Visaya logo" src="./assets/visaya-logo.png">
+    <Configurator title="Welcome to Visaya Product Configurator"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Configurator from './components/Configurator.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Configurator
   }
 }
 </script>
