@@ -1,22 +1,29 @@
 <template>
-  <div class="hello">
+  <div class="container">
     <h1>{{ title }}</h1>
     <p>
       Please select product options
     </p>
-    <div v-for="(option, optionKey) in options" :key="optionKey">
-      <h3>{{option.title}}</h3>
-      <div v-for="(value, valueKey) in option.values" :key="valueKey" class="column">
-        <a
-          v-if="valueEnabled(value.option_type_id)"
-          v-on:click="toggleOptionValue(option, value.option_type_id)"
-          :class="{selected: valueSelected(value.option_type_id) }"
-        >{{value.title}}</a>
-        <span v-else>{{value.title}}</span>
+    <div class="row">
+      <div v-for="(option, optionKey) in options" :key="optionKey" class="col">
+        <h4>{{option.title}}</h4>
+        <div class="btn-group-vertical" role="group">
+          <button
+            v-for="(value, valueKey) in option.values" :key="valueKey"
+            type="button"
+            v-on:click="toggleOptionValue(option, value.option_type_id)"
+            class="btn btn-outline-primary btn-block"
+            :disabled="valueDisabled(value.option_type_id)"
+            :class="{active: valueSelected(value.option_type_id) }"
+          >{{value.title}}</button>
+        </div>
       </div>
     </div>
-    <button v-if="allOptionsSelected">Buy</button>
-    <span v-else>Please select all options</span>
+    <div class="row">
+      <div class="col">
+        <button type="button" :disabled="!allOptionsSelected" class="btn btn-primary">Add to Cart</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,8 +52,8 @@
       valueSelected(id) {
         return this.selectedValueIds.has(id);
       },
-      valueEnabled(id) {
-        return !this.disabledValueIds.has(id);
+      valueDisabled(id) {
+        return this.disabledValueIds.has(id);
       },
     },
     props: {
@@ -63,6 +70,7 @@
         return new Set([...disabledIds]);
       },
       allOptionsSelected() {
+        // Every option has at least one value selected
         return this.options.every(option => {
           return option.values.some(value => this.selectedValueIds.has(value.option_type_id));
         });
@@ -72,22 +80,12 @@
 </script>
 
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+h4 {
+  margin: 20px 0;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.btn.btn-outline-primary:disabled{
+  border-color: #6c757d;
+  color: #6c757d;
 }
 
-a.selected {
-  font-weight: bold;
-}
 </style>
